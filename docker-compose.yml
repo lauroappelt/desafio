@@ -1,0 +1,59 @@
+version: "3.7"
+
+services:
+    # image project
+    app:
+        container_name: desafio-app
+        build:
+            context: .
+            dockerfile: Dockerfile
+        working_dir: /var/www/
+        extra_hosts:
+            - host.docker.internal:host-gateway
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - db
+        networks:
+            - laravel
+
+    # nginx
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "8989:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - laravel
+
+    # postgres
+    db:
+        container_name: desafio-postgres
+        image: postgres:15.4
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_USER: ${DB_USERNAME}
+        ports:
+            - 5432:5432
+        networks:
+            - laravel
+
+    # postgres
+    db-test:
+        container_name: desafio-postgres-test
+        image: postgres:15.4
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_USER: ${DB_USERNAME}
+        ports:
+            - 5433:5433
+        networks:
+            - laravel
+
+networks:
+    laravel:
+        driver: bridge
