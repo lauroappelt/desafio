@@ -17,6 +17,8 @@ class User extends Authenticatable
     public const USER_SHOPKEEPER = 'shoopkeeper';
     public const USER_COMMON = 'common';
 
+    protected $keyType = 'string';
+
     /**
      * The attributes that are mass assignable.
      *

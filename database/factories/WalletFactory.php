@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Wallet>
@@ -21,7 +22,8 @@ class WalletFactory extends Factory
     public function definition(): array
     {
         return [
-            'balance' => fake()->randomNumber(1000),
+            'id' => Uuid::uuid4(),
+            'balance' => fake()->randomNumber(5),
             'user_id' => User::factory(),
         ];
     }
