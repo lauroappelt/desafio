@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Exceptions\InsuficienteBalanceException;
 use App\Models\Wallet;
 use Exception;
 
@@ -12,7 +13,7 @@ class BalanceValidation implements TransactionValidationInterface
         $payer = Wallet::findOrFail($data['payer']);
 
         if ($payer->balance < $data['ammount']) {
-            throw new Exception("Wallet does not have enough balance");
+            throw new InsuficienteBalanceException("Wallet does not have enough balance");
         }
     }
 }
