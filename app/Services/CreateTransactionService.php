@@ -2,21 +2,20 @@
 
 namespace App\Services;
 
-use App\Models\Transaction;
-use App\Models\User;
 use App\Models\Wallet;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WalletRepository;
-use Exception;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Ramsey\Uuid\Uuid;
+use App\Rules\ShopkeeperValidation;
+use App\Rules\BalanceValidation;
+use App\Rules\ExternalAuthorizationValidation;
 
 class CreateTransactionService
 {
     public function __construct(
         private TransactionRepository $transactionRepository,
-        private WalletRepository $walletRepository
+        private WalletRepository $walletRepository,
+        private TransactionValidatorService $validationService,
     ) {
 
     }
@@ -25,26 +24,16 @@ class CreateTransactionService
     {
         DB::beginTransaction();
 
-        $payer = Wallet::findOrFail($data['payer']);
-        $payee = Wallet::findOrFail($data['payee']);
+        $this->validationService->add(new ShopkeeperValidation())
+            ->add(new BalanceValidation())
+            ->add(new ExternalAuthorizationValidation());
 
-        if ($payer->user->user_type == User::USER_SHOPKEEPER) {
-            throw new Exception("Shopkeepers cannot send money");
-        }
-
-        if ($payer->balance < $data['ammount']) {
-            throw new Exception("wallet does not have enough balance");
-        }
-
-        $externalAuthorization = Http::get('https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc');
-        if ($externalAuthorization->status() != 200) {
-            throw new Exception("Transaction is not authorized");
-        }
+        $this->validationService->validate($data);
 
         $this->transactionRepository->createTransaction($data);
 
-        $this->walletRepository->decrementWalletBalance($data['ammount'], $payer->id);
-        $this->walletRepository->incrementWalletBalance($data['ammount'], $payee->id);
+        $this->walletRepository->decrementWalletBalance($data['ammount'], $data['payer']);
+        $this->walletRepository->incrementWalletBalance($data['ammount'], $data['payee']);
 
         DB::commit();
     }
