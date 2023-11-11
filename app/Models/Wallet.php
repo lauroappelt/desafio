@@ -12,6 +12,7 @@ class Wallet extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'user_id',
         'balance',
     ];

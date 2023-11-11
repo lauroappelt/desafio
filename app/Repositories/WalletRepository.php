@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Wallet;
+use Ramsey\Uuid\Uuid;
 
 class WalletRepository
 {
@@ -10,6 +11,15 @@ class WalletRepository
         private Wallet $wallet
     ) {
 
+    }
+
+    public function createWallet(array $data)
+    {
+        $data['id'] = Uuid::uuid4();
+
+        $this->wallet->create($data);
+
+        return $data;
     }
 
     public function incrementWalletBalance(int $ammount, string $id): bool
