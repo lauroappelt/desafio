@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Repositories\TransactionRepository;
+use App\Repositories\WalletRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -12,8 +14,10 @@ use Ramsey\Uuid\Uuid;
 
 class CreateTransactionService
 {
-    public function __construct()
-    {
+    public function __construct(
+        private TransactionRepository $transactionRepository,
+        private WalletRepository $walletRepository
+    ) {
 
     }
 
@@ -37,15 +41,10 @@ class CreateTransactionService
             throw new Exception("Transaction is not authorized");
         }
 
-        Transaction::create([
-            'id' => Uuid::uuid4(),
-            'ammount' => $data['ammount'],
-            'payer' => $payer->id,
-            'payee' => $payee->id,
-        ]);
+        $this->transactionRepository->createTransaction($data);
 
-        $payer->decrement('balance', $data['ammount']);
-        $payee->increment('balance', $data['ammount']);
+        $this->walletRepository->decrementWalletBalance($data['ammount'], $payer->id);
+        $this->walletRepository->incrementWalletBalance($data['ammount'], $payee->id);
 
         DB::commit();
     }
