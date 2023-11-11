@@ -10,7 +10,12 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+
+    public const USER_SHOPKEEPER = 'shoopkeeper';
+    public const USER_COMMON = 'common';
 
     /**
      * The attributes that are mass assignable.
@@ -19,8 +24,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'identifier',
         'email',
         'password',
+        'user_type'
     ];
 
     /**
@@ -30,7 +37,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -39,7 +45,11 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class, 'user_id');
+    }
 }
