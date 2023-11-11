@@ -1,66 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Desafio PHP
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Pré-requisitos
 
-## About Laravel
+* Docker
+* Docker compose
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Instalação
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Passo a passo para você rodar este projeto localmente:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* crie um fork e clone na sua máquina
+* siga os comandos a baixo para subir a aplicação
+```
+$ cp .env.example .env
+$ docker compose up -d
+$ docker exec desafio-php composer install
+$ docker exec desafio-php php artisan migrate:refresh --seed
+$ docker exec desafio-php php artisan migrate:refresh --seed --env=testing
+```
 
-## Learning Laravel
+Após isso a aplicação está disponível em [http://localhost:8989](http://localhost:8989)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Sobre o desafio
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Este teste técnico propoe em criar um mini sistema de transfêrencias bancárias entre dois usuários
 
-## Laravel Sponsors
+## Requisitos definidos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Para ambos tipos de usuário, precisamos do Nome Completo, CPF, e-mail e Senha. CPF/CNPJ e e-mails devem ser únicos no sistema.
 
-### Premium Partners
+* Usuários podem enviar dinheiro (efetuar transferência) para lojistas e entre usuários.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- Lojistas só recebem transferências, não enviam dinheiro para ninguém.
 
-## Contributing
+* Validar se o usuário tem saldo antes da transferência.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Validar o serviço autorizador externo.
 
-## Code of Conduct
+* Em casso de erro tudo deve ser revertido, ou seja, o dinheiro voltar para a conta de origem.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Ao finalizar trânferencia o lojista ou usuário deve receber uma notificação.
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Tecnologias utilizadas
 
-## License
+* Docker | Docker Compose
+* PHP 8.2
+* Laravel 10.x
+* Nginx
+* Postgres
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Observações importantes
+
+Como descrito na documentação do desafio, os itens de autenticação e cadastro dos usuários não são avaliados. Por este motivo não implementei um CRUD completo de usuários e a autenticação.
+
+## Endpoints
+#### `POST /api/user`
+
+- **Descrição:** Cria um novo usuário e sua carteira.
+
+- **Parâmetros de entrada:**
+  - `name`: Nome do usuário.
+  - `identifier`: Identificador do usuário (CPF ou CNPJ).
+  - `email`: E-mail do usuário.
+  - `password`: Senha do usuário.
+  - `user_type`: Tipo do usuário (common ou shopkeeper).
+
+- **Exemplo de Requisição:**
+  ```bash
+  curl -X POST -H "Content-Type: application/json" -d '{"name": "Luis Suarez", "identifier": "878.035.500-53", "email": "luis.suares@mycompany.com", "password": "1234", "user_type": "common"}' http://127.0.0.1:8989/api/user
+
+- **Resposta com sucesso**
+  ```
+  { 
+    "message": "User registered!",
+    "data": {
+            "name": "Juis Suares",
+            "identifier": "878.035.500-53",
+            "email": "luis.suares@mycompany.com",
+            "user_type": "common",
+            "id": "a57d32b8-4951-42d8-baed-18680c32ede7",
+            "wallet": {
+                "user_id": "a57d32b8-4951-42d8-baed-18680c32ede7",
+                "balance": 0,
+                "id": "ef931103-13bc-4525-a804-ce440b8d92d7"
+            }
+        }
+    }
+
+#### `GET /api/user`
+
+- **Descrição:** Lista os usuários cadastrados.
+
+- **Parâmetros de entrada:** Nenhum.
+
+- **Exemplo de Requisição:**
+  ```bash 
+  curl -X GET -H "Content-Type: application/json"  http://127.0.0.1:8989/api/user
+
+- **Resposta com sucesso**
+  ```
+    {
+        "data": [
+            {
+                "id": "d49304ec-4298-4d00-b32f-a08e8983bb2e",
+                "name": "Luis Suares",
+                "identifier": "878.035.500-53",
+                "email": "luis.suares@mycompany.com",
+                "user_type": "common",
+                "created_at": "2023-11-11T21:54:52.000000Z",
+                "updated_at": "2023-11-11T21:54:52.000000Z",
+                "wallet": {
+                    "id": "92b6b14f-72d6-4665-9602-b9ae98a8adee",
+                    "user_id": "d49304ec-4298-4d00-b32f-a08e8983bb2e",
+                    "balance": 0,
+                    "created_at": "2023-11-11T21:54:52.000000Z",
+                    "updated_at": "2023-11-11T21:54:52.000000Z"
+                }
+            }
+        ]
+    }
