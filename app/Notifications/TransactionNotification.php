@@ -17,10 +17,10 @@ class TransactionNotification
         return $this;
     }
 
-    public function validate(Transaction $transaction): void
+    public function notify(Transaction $transaction): void
     {
         foreach ($this->notifications as $notification) {
-            $notification->validate($transaction);
+            $notification->notify($transaction);
         }
     }
 }

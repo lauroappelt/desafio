@@ -13,7 +13,13 @@ class ExternalServiceNotification implements TransactionNotificationInteface
     public function notify(Transaction $transaction): void
     {
         try {
-            $notification = Http::get('https://run.mocky.io/v3/54dc2cf1-3add-45b5-b5a9-6bf7e7f1f4a6');
+            $notificationRequest = Http::get('https://run.mocky.io/v3/54dc2cf1-3add-45b5-b5a9-6bf7e7f1f4a6');
+
+            if ($notificationRequest->status() != 200) {
+                throw new Exception("Error sending notification");
+
+            }
+
         } catch (\Exception $exception) {
             Log::error("Error sending notification: ", $exception->getMessage());
         }

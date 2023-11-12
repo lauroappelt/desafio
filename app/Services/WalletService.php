@@ -17,10 +17,7 @@ class WalletService
     public function createWallet(array $data)
     {
         $data['id'] = Uuid::uuid4();
-
-        $this->wallet->create($data);
-
-        return $data;
+        return $this->wallet->create($data);
     }
 
     public function incrementWalletBalance(int $ammount, string $id): void
@@ -37,7 +34,7 @@ class WalletService
     {
         $wallet = $this->wallet->find($id);
 
-        return $wallet->balance > $ammout;
+        return $wallet->balance >= $ammout;
     }
 
     public function walletBelongsToShopkeeper(string $id)
