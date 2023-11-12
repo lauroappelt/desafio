@@ -20,14 +20,18 @@ class WalletService
         return $this->wallet->create($data);
     }
 
-    public function incrementWalletBalance(int $ammount, string $id): void
+    public function incrementWalletBalance(int $ammount, string $id): bool
     {
         $this->wallet->where('id', $id)->increment('balance', $ammount);
+
+        return true;
     }
 
-    public function decrementWalletBalance(int $ammount, string $id): void
+    public function decrementWalletBalance(int $ammount, string $id): bool
     {
         $this->wallet->where('id', $id)->decrement('balance', $ammount);
+
+        return true;
     }
 
     public function walletHasEnoughBalanceToTransfer(int $ammout, string $id): bool

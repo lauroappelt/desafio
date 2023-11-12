@@ -4,5 +4,5 @@ namespace App\Validations;
 
 interface TransactionValidationInterface
 {
-    public function validate(array $data): void;
+    public function validate(array $data): bool;
 }

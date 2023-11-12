@@ -15,12 +15,12 @@ class BalanceValidationTest extends TestCase
     {
         $wallet = Wallet::factory()->create();
 
-        app(BalanceValidation::class)->validate([
+        $result = app(BalanceValidation::class)->validate([
             'ammount' => $wallet->balance,
             'payer' => $wallet->id,
         ]);
 
-        $this->assertTrue(true);
+        $this->assertTrue($result);
     }
 
 

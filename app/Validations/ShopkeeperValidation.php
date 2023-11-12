@@ -17,10 +17,12 @@ class ShopkeeperValidation implements TransactionValidationInterface
 
     }
 
-    public function validate(array $data): void
+    public function validate(array $data): bool
     {
         if ($this->walletService->walletBelongsToShopkeeper($data['payer'])) {
             throw new ShopkeeperCannotSendMoneyException("Shopkeeper cannot send money");
         }
+
+        return true;
     }
 }

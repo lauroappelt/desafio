@@ -15,10 +15,12 @@ class BalanceValidation implements TransactionValidationInterface
 
     }
 
-    public function validate(array $data): void
+    public function validate(array $data): bool
     {
         if (!$this->walletService->walletHasEnoughBalanceToTransfer($data['ammount'], $data['payer'])) {
             throw new InsuficienteBalanceException("Wallet does not have enough balance");
         }
+
+        return true;
     }
 }
