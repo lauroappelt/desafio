@@ -25,6 +25,6 @@ class WalletRepositoryTest extends TestCase
 
         $result = $repository->decrementWalletBalance($wallet->balance, $wallet->id);
 
-        $this->assertTrue($result);
+        $this->assertInstanceOf(Wallet::class, $result);
     }
 }

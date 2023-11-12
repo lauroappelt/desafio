@@ -2,19 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\Wallet;
-use App\Repositories\TransactionRepository;
-use App\Repositories\WalletRepository;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use App\Rules\ShopkeeperValidation;
 use App\Rules\BalanceValidation;
 use App\Rules\ExternalAuthorizationValidation;
+use Ramsey\Uuid\Uuid;
 
 class CreateTransactionService
 {
     public function __construct(
-        private TransactionRepository $transactionRepository,
-        private WalletRepository $walletRepository,
+        private Transaction $transaction,
+        private WalletService $walletService,
         private TransactionValidatorService $validationService,
     ) {
 
@@ -24,17 +23,28 @@ class CreateTransactionService
     {
         DB::beginTransaction();
 
+        $this->validateTransacation($data);
+
+        $this->createTransaction($data);
+
+        $this->walletService->decrementWalletBalance($data['ammount'], $data['payer']);
+        $this->walletService->incrementWalletBalance($data['ammount'], $data['payee']);
+
+        DB::commit();
+    }
+
+    private function validateTransacation(array $data): void
+    {
         $this->validationService->add(new ShopkeeperValidation())
             ->add(new BalanceValidation())
             ->add(new ExternalAuthorizationValidation());
 
         $this->validationService->validate($data);
+    }
 
-        $this->transactionRepository->createTransaction($data);
-
-        $this->walletRepository->decrementWalletBalance($data['ammount'], $data['payer']);
-        $this->walletRepository->incrementWalletBalance($data['ammount'], $data['payee']);
-
-        DB::commit();
+    public function create(array $data): Transaction
+    {
+        $data['id'] = Uuid::uuid4();
+        return $this->transaction->create($data);
     }
 }

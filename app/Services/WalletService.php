@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services;
 
-use App\Models\Wallet;
 use Ramsey\Uuid\Uuid;
+use App\Models\Wallet;
 
-class WalletRepository
+class WalletService
 {
     public function __construct(
         private Wallet $wallet
@@ -22,17 +22,13 @@ class WalletRepository
         return $data;
     }
 
-    public function incrementWalletBalance(int $ammount, string $id): bool
+    public function incrementWalletBalance(int $ammount, string $id): void
     {
         $this->wallet->where('id', $id)->increment('balance', $ammount);
-
-        return true;
     }
 
-    public function decrementWalletBalance(int $ammount, string $id): bool
+    public function decrementWalletBalance(int $ammount, string $id): void
     {
         $this->wallet->where('id', $id)->decrement('balance', $ammount);
-
-        return true;
     }
 }

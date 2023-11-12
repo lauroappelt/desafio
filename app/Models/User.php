@@ -14,7 +14,7 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    public const USER_SHOPKEEPER = 'shoopkeeper';
+    public const USER_SHOPKEEPER = 'shopkeeper';
     public const USER_COMMON = 'common';
 
     protected $keyType = 'string';

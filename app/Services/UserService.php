@@ -2,27 +2,31 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Repositories\UserRepository;
-use App\Repositories\WalletRepository;
+use App\Services\WalletService;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     public function __construct(
+        private User $user,
         private UserRepository $userRepository,
-        private WalletRepository $walletRepository,
+        private WalletService $walletService,
     ) {
 
     }
 
-    public function createUser(array $data)
+    public function createNewUser(array $data)
     {
         DB::beginTransaction();
 
-        $user = $this->userRepository->createUser($data);
-        
-        $user['wallet'] = $this->walletRepository->createWallet([
-            'user_id' => $user['id'],
+        $user = $this->createUser($data);
+
+        $this->walletService->createWallet([
+            'user_id' => $user->id,
             'balance' => 0,
         ]);
 
@@ -35,13 +39,20 @@ class UserService
     {
         DB::beginTransaction();
 
-        $this->walletRepository->incrementWalletBalance($data['ammount'], $data['wallet_id']);
+        $this->walletService->incrementWalletBalance($data['ammount'], $data['wallet_id']);
 
         DB::commit();
     }
 
     public function listAllUsers()
     {
-        return $this->userRepository->listAllUsers();
+        return User::with('wallet')->get();
+    }
+
+    public function createUser(array $data): User
+    {
+        $data['id'] = Uuid::uuid4();
+        $data['password'] = Hash::make($data['password']);
+        return $this->user->create($data);
     }
 }
