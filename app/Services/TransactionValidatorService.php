@@ -4,10 +4,19 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use App\validations\TransactionValidationInterface;
+use App\Validations\ShopkeeperValidation;
+use App\Validations\BalanceValidation;
+use App\Validations\ExternalAuthorizationValidation;
 
 class TransactionValidatorService
 {
-    private $validations = [];
+    public function __construct(
+        private $validations = []
+    ) {
+        $this->add(new ShopkeeperValidation())
+            ->add(new BalanceValidation())
+            ->add(new ExternalAuthorizationValidation());
+    }
 
     public function add(TransactionValidationInterface $validation): TransactionValidatorService
     {

@@ -4,9 +4,6 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
-use App\Validations\ShopkeeperValidation;
-use App\Validations\BalanceValidation;
-use App\Validations\ExternalAuthorizationValidation;
 use Ramsey\Uuid\Uuid;
 
 class CreateTransactionService
@@ -15,6 +12,7 @@ class CreateTransactionService
         private Transaction $transaction,
         private WalletService $walletService,
         private TransactionValidatorService $validationService,
+        private TransactionNotificationService $notificationService,
     ) {
 
     }
@@ -25,26 +23,29 @@ class CreateTransactionService
 
         $this->validateTransacation($data);
 
-        $this->create($data);
+        $transaction = $this->create($data);
 
         $this->walletService->decrementWalletBalance($data['ammount'], $data['payer']);
         $this->walletService->incrementWalletBalance($data['ammount'], $data['payee']);
 
         DB::commit();
+
+        $this->notify($transaction);
     }
 
     private function validateTransacation(array $data): void
     {
-        $this->validationService->add(new ShopkeeperValidation())
-            ->add(new BalanceValidation())
-            ->add(new ExternalAuthorizationValidation());
-
         $this->validationService->validate($data);
     }
 
-    public function create(array $data): Transaction
+    private function create(array $data): Transaction
     {
         $data['id'] = Uuid::uuid4();
         return $this->transaction->create($data);
+    }
+
+    private function notify(Transaction $transaction)
+    {
+        $this->notificationService->notify($transaction);
     }
 }
