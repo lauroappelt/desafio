@@ -23,4 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('user', [UserController::class, 'createUser'])->name('api.user.create');
 Route::get('user', [UserController::class, 'listUsers'])->name('api.user.list');
 
+//acredito nao estar semanticamente correto
+Route::put('user', [UserController::class, 'addBalance'])->name('api.user.balance');
+
 Route::post('transaction', [CreateTransactionController::class, 'createTransaction'])->name('api.create.transaction');

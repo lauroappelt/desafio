@@ -31,6 +31,15 @@ class UserService
         return $user;
     }
 
+    public function addBalanceToUserWallet(array $data)
+    {
+        DB::beginTransaction();
+
+        $this->walletRepository->incrementWalletBalance($data['ammount'], $data['wallet_id']);
+
+        DB::commit();
+    }
+
     public function listAllUsers()
     {
         return $this->userRepository->listAllUsers();
