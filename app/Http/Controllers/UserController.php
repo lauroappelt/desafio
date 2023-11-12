@@ -18,7 +18,7 @@ class UserController extends Controller
     public function createUser(CreateUserRequest $request)
     {
         try {
-            $userData = $this->userService->createUser($request->validated());
+            $userData = $this->userService->createNewUser($request->validated());
 
             return response()->json([
                 'message' => 'User registered!',

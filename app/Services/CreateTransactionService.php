@@ -44,7 +44,7 @@ class CreateTransactionService
         return $this->transaction->create($data);
     }
 
-    private function notify(Transaction $transaction)
+    private function notify(Transaction $transaction): void
     {
         $this->notificationService->notify($transaction);
     }
