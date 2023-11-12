@@ -53,12 +53,12 @@ class TransactionTest extends TestCase
         $response->assertBadRequest();
     }
 
-    public function test_user_cannot_send_money_to_themselves(): void
+    public function test_user_cannot_send_money_to_yourself(): void
     {
         $payer = Wallet::factory()->create();
 
         $response = $this->post(route('api.create.transaction'), [
-            'ammount' => $payer->balance + 1000,
+            'ammount' => $payer->balance,
             'payer' => $payer->id,
             'payee' => $payer->id,
         ]);

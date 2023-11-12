@@ -7,6 +7,7 @@ use App\validations\TransactionValidationInterface;
 use App\Validations\ShopkeeperValidation;
 use App\Validations\BalanceValidation;
 use App\Validations\ExternalAuthorizationValidation;
+use App\Validations\SendMoneyToYourselfValidation;
 
 class TransactionValidatorService
 {
@@ -15,6 +16,7 @@ class TransactionValidatorService
     ) {
         $this->add(app()->make(ShopkeeperValidation::class))
             ->add(app()->make(BalanceValidation::class))
+            ->add(new SendMoneyToYourselfValidation())
             ->add(new ExternalAuthorizationValidation());
     }
 
