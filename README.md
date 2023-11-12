@@ -14,9 +14,9 @@ Passo a passo para você rodar este projeto localmente:
 ```
 $ cp .env.example .env
 $ docker compose up -d
-$ docker exec desafio-php composer install
-$ docker exec desafio-php php artisan migrate:refresh --seed
-$ docker exec desafio-php php artisan migrate:refresh --seed --env=testing
+$ docker exec desafio-app composer install
+$ docker exec desafio-app php artisan migrate:refresh --seed
+$ docker exec desafio-app php artisan migrate:refresh --seed --env=testing
 ```
 
 Após isso a aplicação está disponível em [http://localhost:8989](http://localhost:8989)
@@ -54,6 +54,43 @@ Este teste técnico propoe em criar um mini sistema de transfêrencias bancária
 ## Observações importantes
 
 Como descrito na documentação do desafio, os itens de autenticação e cadastro dos usuários não são avaliados. Por este motivo não implementei um CRUD completo de usuários e a autenticação.
+
+## Modelagem de dados
+
+Por se tratar de um sistema bancário, escolhi representar os valores em inteiros (centavos): 100 = R$ 1,00. 
+
+Escolhi utilizar UUID como chaves primárias, por se tratar de operações de transfêrencias bancárias.
+
+```markdown
+# Tabela: users
+
+| Coluna      | Tipo          | Constraint
+|-------------|---------------|-------------
+| id          | UUID          | PK
+| name        | VARCHAR       |
+| identifier  | VARCHAR       | UK
+| email       | VARCHAR       | UK
+| password    | VARCHAR       |
+| user_type   | VARCHJAR      |
+
+# Tabela: wallets
+
+| Coluna      | Tipo          | Constraint
+|-------------|---------------|----------
+| id          | UUID          | PK      
+| user_id     | UUID          | FK (users.id)  
+| balance     | BIGINT        |
+
+# Tabela: transactions
+
+| Coluna      | Tipo          | Constraint
+|-------------|---------------|----------
+| id          | UUID          | PK      
+| payer       | UUID          | FK (wallets.id)
+| payee       | UUID          | FK (wallets.id)
+| ammount     | BIGINT        | 
+
+```
 
 ## Endpoints
 #### `POST /api/user`
