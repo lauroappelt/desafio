@@ -15,6 +15,7 @@ Passo a passo para você rodar este projeto localmente:
 $ cp .env.example .env
 $ docker compose up -d
 $ docker exec desafio-app composer install
+$ docker exec desafio-app php artisan key:generate
 $ docker exec desafio-app php artisan migrate:refresh --seed
 $ docker exec desafio-app php artisan migrate:refresh --seed --env=testing
 ```
