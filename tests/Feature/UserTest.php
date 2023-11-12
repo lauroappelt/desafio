@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -54,6 +55,34 @@ class UserTest extends TestCase
         ];
         
         $response = $this->post(route('api.user.create'), $payload, ['accept' => 'application/json']);
+
+        $response->assertUnprocessable();
+    }
+
+    public function test_user_can_add_balance_to_wallet(): void
+    {
+        $wallet = Wallet::factory()->create();
+
+        $response = $this->put(route('api.user.balance'), [
+            'wallet_id' => $wallet->id,
+            'ammount' => 1000
+        ]);
+
+        $response->assertOk();
+
+        $wallet->balance += 1000;
+
+        $this->assertDatabaseHas('wallets', $wallet->toArray());
+    }
+
+    public function test_user_canot_add_balance_smallet_than_zero(): void
+    {
+        $wallet = Wallet::factory()->create();
+
+        $response = $this->put(route('api.user.balance'), [
+            'wallet_id' => $wallet->id,
+            'ammount' => -1000
+        ], ['accept' => 'application/json']);
 
         $response->assertUnprocessable();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddBalanceRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Services\UserService;
 use Exception;
@@ -23,6 +24,19 @@ class UserController extends Controller
                 'message' => 'User registered!',
                 'data' => $userData,
             ], 201);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function addBalance(AddBalanceRequest $addBalanceRequest)
+    {
+        try {
+            $this->userService->addBalanceToUserWallet($addBalanceRequest->validated());
+
+            return response()->json([
+                'message' => 'Founds add!',
+            ], 200);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
