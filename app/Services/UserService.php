@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Repositories\UserRepository;
 use App\Services\WalletService;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
@@ -13,7 +12,6 @@ class UserService
 {
     public function __construct(
         private User $user,
-        private UserRepository $userRepository,
         private WalletService $walletService,
     ) {
 

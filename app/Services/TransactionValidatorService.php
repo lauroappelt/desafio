@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Transaction;
-use App\Rules\TransactionValidationInterface;
+use App\validations\TransactionValidationInterface;
 
 class TransactionValidatorService
 {

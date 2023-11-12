@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Rules;
+namespace App\Validations;
 
 use App\Exceptions\ExternalAuthorizationException;
-use App\Rules\TransactionValidationInterface;
+use App\Validations\TransactionValidationInterface;
 use Illuminate\Support\Facades\Http;
 use Exception;
 

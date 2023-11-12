@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Rules;
+namespace App\Validations;
 
 use App\Exceptions\InsuficienteBalanceException;
 use App\Models\Wallet;

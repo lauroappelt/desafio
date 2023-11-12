@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
-use App\Rules\ShopkeeperValidation;
-use App\Rules\BalanceValidation;
-use App\Rules\ExternalAuthorizationValidation;
+use App\Validations\ShopkeeperValidation;
+use App\Validations\BalanceValidation;
+use App\Validations\ExternalAuthorizationValidation;
 use Ramsey\Uuid\Uuid;
 
 class CreateTransactionService

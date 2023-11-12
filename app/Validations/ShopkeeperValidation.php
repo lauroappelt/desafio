@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rules;
+namespace App\Validations;
 
 use App\Exceptions\ShopkeeperCannotSendMoneyException;
 use App\Models\User;
 use App\Models\Wallet;
-use App\Rules\TransactionValidationInterface;
+use App\Validations\TransactionValidationInterface;
 use Exception;
 
 class ShopkeeperValidation implements TransactionValidationInterface
