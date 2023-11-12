@@ -25,7 +25,7 @@ class CreateTransactionService
 
         $this->validateTransacation($data);
 
-        $this->createTransaction($data);
+        $this->create($data);
 
         $this->walletService->decrementWalletBalance($data['ammount'], $data['payer']);
         $this->walletService->incrementWalletBalance($data['ammount'], $data['payee']);
