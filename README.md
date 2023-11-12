@@ -57,67 +57,15 @@ Como descrito na documentação do desafio, os itens de autenticação e cadastr
 
 ## Endpoints
 #### `POST /api/user`
-
-- **Descrição:** Cria um novo usuário e sua carteira.
-
-- **Parâmetros de entrada:**
-  - `name`: Nome do usuário.
-  - `identifier`: Identificador do usuário (CPF ou CNPJ).
-  - `email`: E-mail do usuário.
-  - `password`: Senha do usuário.
-  - `user_type`: Tipo do usuário (common ou shopkeeper).
-
-- **Exemplo de Requisição:**
-  ```bash
-  curl -X POST -H "Content-Type: application/json" -d '{"name": "Luis Suarez", "identifier": "878.035.500-53", "email": "luis.suares@mycompany.com", "password": "1234", "user_type": "common"}' http://127.0.0.1:8989/api/user
-
-- **Resposta com sucesso**
-  ```
-  { 
-    "message": "User registered!",
-    "data": {
-            "name": "Juis Suares",
-            "identifier": "878.035.500-53",
-            "email": "luis.suares@mycompany.com",
-            "user_type": "common",
-            "id": "a57d32b8-4951-42d8-baed-18680c32ede7",
-            "wallet": {
-                "user_id": "a57d32b8-4951-42d8-baed-18680c32ede7",
-                "balance": 0,
-                "id": "ef931103-13bc-4525-a804-ce440b8d92d7"
-            }
-        }
-    }
+- Cria um novo usuário e sua carteira.
 
 #### `GET /api/user`
+- Lista todos usuários com sua carteira
 
-- **Descrição:** Lista os usuários cadastrados.
+#### `PUT /api/user`
+- Adiciona saldo a carteira do usuário
 
-- **Parâmetros de entrada:** Nenhum.
+#### POST /api/transaction`
+- Realiza a trânsferencia entre carteiras
 
-- **Exemplo de Requisição:**
-  ```bash 
-  curl -X GET -H "Content-Type: application/json"  http://127.0.0.1:8989/api/user
-
-- **Resposta com sucesso**
-  ```
-    {
-        "data": [
-            {
-                "id": "d49304ec-4298-4d00-b32f-a08e8983bb2e",
-                "name": "Luis Suares",
-                "identifier": "878.035.500-53",
-                "email": "luis.suares@mycompany.com",
-                "user_type": "common",
-                "created_at": "2023-11-11T21:54:52.000000Z",
-                "updated_at": "2023-11-11T21:54:52.000000Z",
-                "wallet": {
-                    "id": "92b6b14f-72d6-4665-9602-b9ae98a8adee",
-                    "user_id": "d49304ec-4298-4d00-b32f-a08e8983bb2e",
-                    "balance": 0,
-                    "created_at": "2023-11-11T21:54:52.000000Z",
-                    "updated_at": "2023-11-11T21:54:52.000000Z"
-                }
-            }
-        ]
-    }
+Veja a documentação completa aqui [https://documenter.getpostman.com/view/17234193/2s9YXk41sv#f7ff9a27-d268-46fc-9831-205525901979](https://documenter.getpostman.com/view/17234193/2s9YXk41sv#f7ff9a27-d268-46fc-9831-205525901979)
