@@ -65,7 +65,7 @@ Como descrito na documentação do desafio, os itens de autenticação e cadastr
 #### `PUT /api/user`
 - Adiciona saldo a carteira do usuário
 
-#### POST /api/transaction`
+#### `POST /api/transaction`
 - Realiza a trânsferencia entre carteiras
 
 Veja a documentação completa aqui [https://documenter.getpostman.com/view/17234193/2s9YXk41sv#f7ff9a27-d268-46fc-9831-205525901979](https://documenter.getpostman.com/view/17234193/2s9YXk41sv#f7ff9a27-d268-46fc-9831-205525901979)
