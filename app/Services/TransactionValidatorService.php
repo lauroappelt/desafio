@@ -13,8 +13,8 @@ class TransactionValidatorService
     public function __construct(
         private $validations = []
     ) {
-        $this->add(new ShopkeeperValidation())
-            ->add(new BalanceValidation())
+        $this->add(app()->make(ShopkeeperValidation::class))
+            ->add(app()->make(BalanceValidation::class))
             ->add(new ExternalAuthorizationValidation());
     }
 

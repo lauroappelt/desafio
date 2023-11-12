@@ -6,15 +6,20 @@ use App\Exceptions\ShopkeeperCannotSendMoneyException;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Validations\TransactionValidationInterface;
+use App\Services\WalletService;
 use Exception;
 
 class ShopkeeperValidation implements TransactionValidationInterface
 {
+    public function __construct(
+        private WalletService $walletService
+    ) {
+
+    }
+
     public function validate(array $data): void
     {
-        $payer = Wallet::findOrFail($data['payer']);
-
-        if ($payer->user->user_type == User::USER_SHOPKEEPER) {
+        if ($this->walletService->walletBelongsToShopkeeper($data['payer'])) {
             throw new ShopkeeperCannotSendMoneyException("Shopkeeper cannot send money");
         }
     }

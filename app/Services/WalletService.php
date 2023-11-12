@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Ramsey\Uuid\Uuid;
 use App\Models\Wallet;
 
@@ -30,5 +31,19 @@ class WalletService
     public function decrementWalletBalance(int $ammount, string $id): void
     {
         $this->wallet->where('id', $id)->decrement('balance', $ammount);
+    }
+
+    public function walletHasEnoughBalanceToTransfer(int $ammout, string $id): bool
+    {
+        $wallet = $this->wallet->find($id);
+
+        return $wallet->balance > $ammout;
+    }
+
+    public function walletBelongsToShopkeeper(string $id)
+    {
+        $wallet = $this->wallet->find($id);
+
+        return $wallet->user->user_type == User::USER_SHOPKEEPER;
     }
 }
