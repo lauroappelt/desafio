@@ -15,10 +15,10 @@ class TransactionTest extends TestCase
         $payer = Wallet::factory()->create();
         $payee = Wallet::factory()->create();
 
-        $response = $this->post(route('api.create.transaction'), [
+        $response = $this->post(route('api.transference.create'), [
             'ammount' => $payer->balance,
-            'payer' => $payer->id,
-            'payee' => $payee->id,
+            'originWallet' => $payer->id,
+            'destinationWallet' => $payee->id,
         ]);
 
         $response->assertCreated();
@@ -30,10 +30,10 @@ class TransactionTest extends TestCase
         $payee = Wallet::factory()->create();
         $payee->user->update(['user_type' => User::USER_SHOPKEEPER]);
 
-        $response = $this->post(route('api.create.transaction'), [
+        $response = $this->post(route('api.transference.create'), [
             'ammount' => $payer->balance,
-            'payer' => $payer->id,
-            'payee' => $payee->id,
+            'originWallet' => $payer->id,
+            'destinationWallet' => $payee->id,
         ]);
 
         $response->assertCreated();
@@ -44,10 +44,10 @@ class TransactionTest extends TestCase
         $payer = Wallet::factory()->create();
         $payee = Wallet::factory()->create();
 
-        $response = $this->post(route('api.create.transaction'), [
+        $response = $this->post(route('api.transference.create'), [
             'ammount' => $payer->balance + 1000,
-            'payer' => $payer->id,
-            'payee' => $payee->id,
+            'originWallet' => $payer->id,
+            'destinationWallet' => $payee->id,
         ]);
 
         $response->assertBadRequest();
@@ -57,10 +57,10 @@ class TransactionTest extends TestCase
     {
         $payer = Wallet::factory()->create();
 
-        $response = $this->post(route('api.create.transaction'), [
+        $response = $this->post(route('api.transference.create'), [
             'ammount' => $payer->balance,
-            'payer' => $payer->id,
-            'payee' => $payer->id,
+            'originWallet' => $payer->id,
+            'destinationWallet' => $payer->id,
         ]);
 
         $response->assertBadRequest();

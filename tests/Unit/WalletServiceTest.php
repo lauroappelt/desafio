@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Operation;
 use App\Models\Wallet;
 use App\Services\WalletService;
 use Tests\TestCase;
@@ -34,7 +35,7 @@ class WalletServiceTest extends TestCase
 
         $result = app(WalletService::class)->incrementWalletBalance(100, $wallet->id);
 
-        $this->assertTrue($result);
+        $this->assertInstanceOf(Operation::class, $result);
     }
 
     public function test_decrement_wallet_balance(): void
@@ -43,7 +44,7 @@ class WalletServiceTest extends TestCase
 
         $result = app(WalletService::class)->incrementWalletBalance($wallet->balance, $wallet->id);
 
-        $this->assertTrue($result);
+        $this->assertInstanceOf(Operation::class, $result);
     }
 
     public function test_wallet_has_enough_balance(): void

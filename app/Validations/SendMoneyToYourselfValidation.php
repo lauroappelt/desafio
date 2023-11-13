@@ -1,13 +1,14 @@
 <?php
 namespace App\Validations;
 
+use App\DTOs\CreateTransferenceDTO;
 use App\Exceptions\TransactionException;
 
-class SendMoneyToYourselfValidation implements TransactionValidationInterface
+class SendMoneyToYourselfValidation implements TransferenceValidationInterface
 {
-    public function validate(array $data): bool
+    public function validate(CreateTransferenceDTO $data): bool
     {
-        if ($data['payer'] == $data['payee']) {
+        if ($data->originWallet == $data->destinationWallet) {
             throw new TransactionException("You cannot send money to yourself");
         }
 

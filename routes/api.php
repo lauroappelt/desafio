@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\CreateTransactionController;
+use App\Http\Controllers\CreateTransferenceController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('user', [UserController::class, 'createUser'])->name('api.user.create');
 Route::get('user', [UserController::class, 'listUsers'])->name('api.user.list');
 
-//acredito nao estar semanticamente correto
-Route::put('user', [UserController::class, 'addBalance'])->name('api.user.balance');
+Route::post('transference', CreateTransferenceController::class)->name('api.transference.create');
 
-Route::post('transaction', [CreateTransactionController::class, 'createTransaction'])->name('api.create.transaction');
+//acredito nao estar semanticamente correto
+Route::put('wallet', [WalletController::class, 'addBalance'])->name('api.wallet.balance');

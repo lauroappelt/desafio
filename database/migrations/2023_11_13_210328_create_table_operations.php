@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('operations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->bigInteger('ammount');
-            $table->uuid('payer');
-            $table->uuid('payee');
+            $table->uuid('wallet_id');
+            $table->text('operation_type');
+            $table->integer('ammount');
             $table->timestamps();
 
-            $table->foreign('payer')->references('id')->on('wallets');
-            $table->foreign('payee')->references('id')->on('wallets');
+            $table->foreign('wallet_id')->references('id')->on('wallets');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('operations');
     }
 };

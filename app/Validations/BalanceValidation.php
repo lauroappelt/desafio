@@ -2,12 +2,13 @@
 
 namespace App\Validations;
 
+use App\DTOs\CreateTransferenceDTO;
 use App\Exceptions\InsuficienteBalanceException;
 use App\Models\Wallet;
 use App\Services\WalletService;
 use Exception;
 
-class BalanceValidation implements TransactionValidationInterface
+class BalanceValidation implements TransferenceValidationInterface
 {
     public function __construct(
         private WalletService $walletService
@@ -15,9 +16,9 @@ class BalanceValidation implements TransactionValidationInterface
 
     }
 
-    public function validate(array $data): bool
+    public function validate(CreateTransferenceDTO $data): bool
     {
-        if (!$this->walletService->walletHasEnoughBalanceToTransfer($data['ammount'], $data['payer'])) {
+        if (!$this->walletService->walletHasEnoughBalanceToTransfer($data->ammount, $data->originWallet)) {
             throw new InsuficienteBalanceException("Wallet does not have enough balance");
         }
 

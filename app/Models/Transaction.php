@@ -4,27 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Operation;
 class Transaction extends Model
 {
     use HasFactory;
+
+    const TRANSACTION_DEBIT = 'debit';
+    const TRANSACTION_CREDIT = 'credit';
 
     protected $keyType = 'string';
 
     protected $fillable = [
         'id',
-        'ammount',
-        'payer',
-        'payee'
+        'origin',
+        'destination',
     ];
 
-    public function payer()
+    public function origin()
     {
-        return $this->belongsTo(Wallet::class, 'payer');
+        return $this->belongsTo(Operation::class, 'origin');
     }
 
-    public function payee()
+    public function destination()
     {
-        return $this->belongsTo(Wallet::class, 'payee');
+        return $this->belongsTo(Operation::class, 'destination');
     }
 }

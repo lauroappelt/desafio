@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\DTOs\AddBalanceDTO;
 use App\Models\User;
-use App\Services\WalletService;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Hash;
@@ -31,15 +31,6 @@ class UserService
         DB::commit();
 
         return $user;
-    }
-
-    public function addBalanceToUserWallet(array $data)
-    {
-        DB::beginTransaction();
-
-        $this->walletService->incrementWalletBalance($data['ammount'], $data['wallet_id']);
-
-        DB::commit();
     }
 
     public function listAllUsers()

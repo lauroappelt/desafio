@@ -63,7 +63,7 @@ class UserTest extends TestCase
     {
         $wallet = Wallet::factory()->create();
 
-        $response = $this->put(route('api.user.balance'), [
+        $response = $this->put(route('api.wallet.balance'), [
             'wallet_id' => $wallet->id,
             'ammount' => 1000
         ]);
@@ -79,7 +79,7 @@ class UserTest extends TestCase
     {
         $wallet = Wallet::factory()->create();
 
-        $response = $this->put(route('api.user.balance'), [
+        $response = $this->put(route('api.wallet.balance'), [
             'wallet_id' => $wallet->id,
             'ammount' => -1000
         ], ['accept' => 'application/json']);
