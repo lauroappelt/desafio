@@ -13,7 +13,7 @@ class CreateTransferenceService
     public function __construct(
         private TransferenceValidatorService $validatorService,
         private WalletService $walletService,
-        private TransactionNotificationService $notificationService,
+        private TransferenceNotificationService $notificationService,
         private CreateTransactionService $createTransactionService,
     ) {
 

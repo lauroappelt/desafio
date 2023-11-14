@@ -3,7 +3,7 @@ namespace App\Notifications;
 
 use App\Models\Transaction;
 
-interface TransactionNotificationInteface
+interface TransferenceNotificationInteface
 {
     public function notify(Transaction $transaction): void;
 }

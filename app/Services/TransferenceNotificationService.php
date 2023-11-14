@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use App\Notifications\ExternalServiceNotification;
-use App\Notifications\TransactionNotificationInteface;
+use App\Notifications\TransferenceNotificationInteface;
 
-class TransactionNotificationService
+class TransferenceNotificationService
 {
     public function __construct(
         private $notifications = []
@@ -14,7 +14,7 @@ class TransactionNotificationService
         $this->add(new ExternalServiceNotification());
     }
 
-    public function add(TransactionNotificationInteface $notification): TransactionNotificationService
+    public function add(TransferenceNotificationInteface $notification): TransferenceNotificationService
     {
         $this->notifications[] = $notification;
         return $this;

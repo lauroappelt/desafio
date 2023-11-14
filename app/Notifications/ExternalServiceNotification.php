@@ -6,9 +6,8 @@ use App\Models\Transaction;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use App\Notifications\TransactionNotificationInteface;
 
-class ExternalServiceNotification implements TransactionNotificationInteface
+class ExternalServiceNotification implements TransferenceNotificationInteface
 {
     public function notify(Transaction $transaction): void
     {
