@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Transaction;
 use Ramsey\Uuid\Uuid;
 
-class TransactionRepository
+class TransactionRepository implements RepositoryInterface
 {
     public function __construct(
         private Transaction $transaction
@@ -13,7 +13,7 @@ class TransactionRepository
 
     }
 
-    public function create(array $data)
+    public function create(array $data): Transaction
     {
         $data['id'] = Uuid::uuid4();
         return $this->transaction->create($data);

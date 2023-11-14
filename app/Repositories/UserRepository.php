@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Collection;
 
-class UserRepository
+class UserRepository implements RepositoryInterface
 {
     public function __construct(
         private User $user

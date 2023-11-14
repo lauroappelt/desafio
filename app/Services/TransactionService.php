@@ -6,7 +6,7 @@ use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use Ramsey\Uuid\Uuid;
 
-class CreateTransactionService
+class TransactionService
 {
     public function __construct(
         private TransactionRepository $repository

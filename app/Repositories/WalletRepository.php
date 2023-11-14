@@ -6,7 +6,7 @@ use App\Models\Wallet;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Database\Eloquent\Collection;
 
-class WalletRepository
+class WalletRepository implements RepositoryInterface
 {
     public function __construct(
         private Wallet $wallet

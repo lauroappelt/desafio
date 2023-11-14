@@ -6,6 +6,7 @@ use App\DTOs\CreateTransferenceDTO;
 use App\Exceptions\ResourceNotFound;
 use Illuminate\Support\Facades\DB;
 use App\Models\Transaction;
+use App\Notifications\ReceivedTransference;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateTransferenceService
@@ -14,7 +15,7 @@ class CreateTransferenceService
         private TransferenceValidatorService $validatorService,
         private WalletService $walletService,
         private TransferenceNotificationService $notificationService,
-        private CreateTransactionService $createTransactionService,
+        private TransactionService $createTransactionService,
     ) {
 
     }

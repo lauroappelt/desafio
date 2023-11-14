@@ -20,12 +20,12 @@ class Transaction extends Model
         'destination',
     ];
 
-    public function origin()
+    public function originOperation()
     {
         return $this->belongsTo(Operation::class, 'origin');
     }
 
-    public function destination()
+    public function destinationOperation()
     {
         return $this->belongsTo(Operation::class, 'destination');
     }
