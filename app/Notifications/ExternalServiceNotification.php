@@ -16,7 +16,6 @@ class ExternalServiceNotification implements TransferenceNotificationInteface
 
             if ($notificationRequest->status() != 200) {
                 throw new Exception("Error sending notification");
-
             }
 
         } catch (\Exception $exception) {
