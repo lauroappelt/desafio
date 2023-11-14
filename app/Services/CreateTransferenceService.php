@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\DTOs\CreateTransferenceDTO;
+use App\Exceptions\ResourceNotFound;
 use Illuminate\Support\Facades\DB;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateTransferenceService
 {
@@ -21,12 +23,16 @@ class CreateTransferenceService
     {
         DB::beginTransaction();
 
-        $this->validateTransference($data);
+        try {
+            $this->validateTransference($data);
 
-        $creditOperation = $this->walletService->incrementWalletBalance($data->ammount, $data->destinationWallet);
-        $debitOperation = $this->walletService->decrementWalletBalance($data->ammount, $data->originWallet);
+            $creditOperation = $this->walletService->incrementWalletBalance($data->ammount, $data->destinationWallet);
+            $debitOperation = $this->walletService->decrementWalletBalance($data->ammount, $data->originWallet);
 
-        $transaction = $this->createTransactionService->createTransaction($debitOperation->id, $creditOperation->id);
+            $transaction = $this->createTransactionService->createTransaction($debitOperation->id, $creditOperation->id);
+        } catch (ModelNotFoundException $notFoundException) {
+            throw new ResourceNotFound("Wallet does not exists!");
+        }
 
         DB::commit();
 

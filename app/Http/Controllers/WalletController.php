@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\WalletService;
-use App\DTOs\AddBalanceDTO;
 use App\Exceptions\ApplicationException;
 use App\Http\Requests\AddBalanceRequest;
-use App\Services\OperationService;
 use Exception;
 use Illuminate\Http\Request;
 
