@@ -15,7 +15,7 @@ class ExternalServiceNotification implements TransferenceNotificationInteface
             $notificationRequest = Http::get('https://run.mocky.io/v3/54dc2cf1-3add-45b5-b5a9-6bf7e7f1f4a6');
 
             if ($notificationRequest->status() != 200) {
-                throw new Exception("Error sending notification");
+                throw new Exception("External notification failed");
             }
 
         } catch (\Exception $exception) {
