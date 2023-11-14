@@ -82,14 +82,22 @@ Escolhi utilizar UUID como chaves primárias, por se tratar de operações de tr
 | user_id     | UUID          | FK (users.id)  
 | balance     | BIGINT        |
 
+# Tabela: operations
+
+| Coluna         | Tipo          | Constraint
+|----------------|---------------|----------
+| id             | UUID          | PK      
+| wallet_id      | UUID          | FK (wallets.id)
+| operation_type | UUID          | 
+| ammount        | integer       | 
+
 # Tabela: transactions
 
 | Coluna      | Tipo          | Constraint
 |-------------|---------------|----------
 | id          | UUID          | PK      
-| payer       | UUID          | FK (wallets.id)
-| payee       | UUID          | FK (wallets.id)
-| ammount     | BIGINT        | 
+| origin      | UUID          | FK (operations.id)
+| destination | UUID          | FK (operations.id)
 
 ```
 
@@ -100,10 +108,13 @@ Escolhi utilizar UUID como chaves primárias, por se tratar de operações de tr
 #### `GET /api/user`
 - Lista todos usuários com sua carteira
 
-#### `PUT /api/user`
+#### `PUT /api/wallet/{walletId}`
 - Adiciona saldo a carteira do usuário
 
-#### `POST /api/transaction`
+#### `GET /api/wallet/{walletId}`
+- Lista as movimentações da carteira
+
+#### `POST /api/wallet/transference`
 - Realiza a trânsferencia entre carteiras
 
 Veja a documentação completa aqui [https://documenter.getpostman.com/view/17234193/2s9YXk41sv#f7ff9a27-d268-46fc-9831-205525901979](https://documenter.getpostman.com/view/17234193/2s9YXk41sv#f7ff9a27-d268-46fc-9831-205525901979)
