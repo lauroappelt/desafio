@@ -25,7 +25,7 @@ class UserController extends Controller
                 'data' => $userData,
             ], 201);
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Unknown error'], 500);
         }
     }
 
@@ -38,7 +38,7 @@ class UserController extends Controller
                 'data' => $users,
             ], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Unknown error'], 500);
         }
     }
 }

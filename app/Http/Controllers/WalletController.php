@@ -30,7 +30,7 @@ class WalletController extends Controller
         } catch (ApplicationException $applicationException) {
             return response()->json(['message' => $applicationException->getMessage()], $applicationException->getCode());
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Unknown error'], 500);
         }
     }
 
@@ -43,7 +43,7 @@ class WalletController extends Controller
                 'data' => $summary,
             ], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Unknown error'], 500);
         }
     }
 }
