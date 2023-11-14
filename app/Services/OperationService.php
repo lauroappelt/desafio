@@ -3,18 +3,22 @@
 namespace App\Services;
 
 use App\Models\Operation;
+use App\Repositories\OperationRepository;
 use Ramsey\Uuid\Uuid;
 
 class OperationService
 {
+    public function __construct(
+        private OperationRepository $repository
+    ) {
+
+    }
+
     public function createCreditOperation(
         string $walletId,
         int $ammount
     ) {
-        $operationId = Uuid::uuid4();
-
-        return Operation::create([
-            'id' => $operationId,
+        return $this->repository->create([
             'wallet_id' => $walletId,
             'operation_type' => Operation::CREDIT,
             'ammount' => $ammount
@@ -25,10 +29,7 @@ class OperationService
         string $walletId,
         int $ammount
     ) {
-        $operationId = Uuid::uuid4();
-
-        return Operation::create([
-            'id' => $operationId,
+        return $this->repository->create([
             'wallet_id' => $walletId,
             'operation_type' => Operation::DEBIT,
             'ammount' => $ammount
