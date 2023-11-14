@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\DTOs\AddBalanceDTO;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;

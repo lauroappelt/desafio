@@ -22,7 +22,6 @@ class AddBalanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'wallet_id' => 'required|uuid',
             'ammount' => 'required|integer|min:1'
         ];
     }

@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class InsuficienteBalanceException extends TransactionException
+class InsuficienteBalanceException extends ApplicationException
 {
-    //
+    public $code = 400;
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DTOs\AddBalanceDTO;
 use App\Http\Requests\AddBalanceRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Services\UserService;

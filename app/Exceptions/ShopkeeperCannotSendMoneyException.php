@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ShopkeeperCannotSendMoneyException extends TransactionException
+class ShopkeeperCannotSendMoneyException extends ApplicationException
 {
+    public $code = 400;
 }

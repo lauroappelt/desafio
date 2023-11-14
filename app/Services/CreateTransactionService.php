@@ -9,9 +9,9 @@ class CreateTransactionService
 {
     public function createTransaction(string $originOperationId, string $destinationOperationId): Transaction
     {
-        $id = Uuid::uuid4();
+        $transactionId = Uuid::uuid4();
         return Transaction::create([
-            'id' => $id,
+            'id' => $transactionId,
             'origin' => $originOperationId,
             'destination' => $destinationOperationId,
         ]);

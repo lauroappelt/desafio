@@ -21,4 +21,9 @@ class Wallet extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function operation()
+    {
+        return $this->hasMany(Operation::class, 'wallet_id');
+    }
 }

@@ -11,10 +11,10 @@ class OperationService
         string $walletId,
         int $ammount
     ) {
-        $id = Uuid::uuid4();
+        $operationId = Uuid::uuid4();
 
         return Operation::create([
-            'id' => $id,
+            'id' => $operationId,
             'wallet_id' => $walletId,
             'operation_type' => Operation::CREDIT,
             'ammount' => $ammount
@@ -25,10 +25,10 @@ class OperationService
         string $walletId,
         int $ammount
     ) {
-        $id = Uuid::uuid4();
+        $operationId = Uuid::uuid4();
 
         return Operation::create([
-            'id' => $id,
+            'id' => $operationId,
             'wallet_id' => $walletId,
             'operation_type' => Operation::DEBIT,
             'ammount' => $ammount

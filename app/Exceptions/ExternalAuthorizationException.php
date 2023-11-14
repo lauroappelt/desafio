@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ExternalAuthorizationException extends TransactionException
+class ExternalAuthorizationException extends ApplicationException
 {
+    public $code = 401;
 }
