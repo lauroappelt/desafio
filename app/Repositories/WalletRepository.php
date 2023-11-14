@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Wallet;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Database\Eloquent\Collection;
 
 class WalletRepository
 {
@@ -46,7 +47,7 @@ class WalletRepository
     public function decrementBalance(int $ammount, string $walletId): Wallet
     {
         $wallet = $this->find($walletId);
-        $wallet->increment('balance', $ammount);
+        $wallet->decrement('balance', $ammount);
         return $wallet;
     }
 
