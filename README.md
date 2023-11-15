@@ -118,3 +118,8 @@ Escolhi utilizar UUID como chaves primárias, por se tratar de operações de tr
 - Realiza a trânsferencia entre carteiras
 
 Veja a documentação completa aqui [https://documenter.getpostman.com/view/17234193/2s9YXk41sv#f7ff9a27-d268-46fc-9831-205525901979](https://documenter.getpostman.com/view/17234193/2s9YXk41sv#f7ff9a27-d268-46fc-9831-205525901979)
+
+## Proposta de melhorias
+-  Filas para envio das notificações ser feito de forma assíncrona
+
+*  Abstração da camada de repositórios, para que as ações de persistencia ou recuperação dados dos dados possam ser feitas em outros serviços, como redis ou publicação de mensagens com rabbitMQ, e isso ser transparente para as classes services 
