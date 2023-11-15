@@ -65,4 +65,33 @@ class TransactionTest extends TestCase
 
         $response->assertBadRequest();
     }
+
+    public function test_shopkeeper_cannot_send_money(): void
+    {
+        $payee = Wallet::factory()->create();
+        $payer = Wallet::factory()->create();
+        $payer->user->update(['user_type' => User::USER_SHOPKEEPER]);
+
+        $response = $this->post(route('api.transference.create'), [
+            'ammount' => $payer->balance,
+            'originWallet' => $payer->id,
+            'destinationWallet' => $payee->id,
+        ]);
+
+        $response->assertBadRequest();
+    }
+
+    public function test_user_canot_send_value_smallet_than_one(): void
+    {
+        $payer = Wallet::factory()->create();
+        $payee = Wallet::factory()->create();
+
+        $response = $this->post(route('api.transference.create'), [
+            'ammount' => $payer->balance * -1,
+            'originWallet' => $payer->id,
+            'destinationWallet' => $payee->id,
+        ], ['accept' => 'application/json']);
+
+        $response->assertUnprocessable();
+    } 
 }

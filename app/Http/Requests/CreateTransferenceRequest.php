@@ -22,7 +22,7 @@ class CreateTransferenceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ammount' => 'required|integer',
+            'ammount' => 'required|integer|min:1',
             'originWallet' => 'required|uuid|exists:wallets,id',
             'destinationWallet' => 'required|uuid|exists:wallets,id'
         ];

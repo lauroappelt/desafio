@@ -74,7 +74,7 @@ class UserTest extends TestCase
         $this->assertDatabaseHas('wallets', $wallet->toArray());
     }
 
-    public function test_user_canot_add_balance_smallet_than_zero(): void
+    public function test_user_canot_add_balance_smallet_than_one(): void
     {
         $wallet = Wallet::factory()->create();
 
