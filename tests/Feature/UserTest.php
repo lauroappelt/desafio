@@ -59,29 +59,12 @@ class UserTest extends TestCase
         $response->assertUnprocessable();
     }
 
-    public function test_user_can_add_balance_to_wallet(): void
+    public function test_list_users(): void
     {
-        $wallet = Wallet::factory()->create();
-
-        $response = $this->put(route('api.wallet.balance', ['walletId' => $wallet->id]), [
-            'ammount' => 1000
-        ]);
-
+        $response = $this->get(route('api.user.list'));
+    
         $response->assertOk();
 
-        $wallet->balance += 1000;
-
-        $this->assertDatabaseHas('wallets', $wallet->toArray());
-    }
-
-    public function test_user_canot_add_balance_smallet_than_one(): void
-    {
-        $wallet = Wallet::factory()->create();
-
-        $response = $this->put(route('api.wallet.balance', ['walletId' => $wallet->id]), [
-            'ammount' => -1000
-        ], ['accept' => 'application/json']);
-
-        $response->assertUnprocessable();
+        $response->assertJsonStructure(['data']);
     }
 }

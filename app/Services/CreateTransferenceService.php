@@ -22,20 +22,19 @@ class CreateTransferenceService
 
     public function creatNewTransference(CreateTransferenceDTO $data)
     {
-        DB::beginTransaction();
 
-        try {
-            $this->validateTransference($data);
+        $transaction = DB::transaction(function () use ($data) {
+            try {
+                $this->validateTransference($data);
 
-            $creditOperation = $this->walletService->incrementWalletBalance($data->ammount, $data->destinationWallet);
-            $debitOperation = $this->walletService->decrementWalletBalance($data->ammount, $data->originWallet);
+                $creditOperation = $this->walletService->incrementWalletBalance($data->ammount, $data->destinationWallet);
+                $debitOperation = $this->walletService->decrementWalletBalance($data->ammount, $data->originWallet);
 
-            $transaction = $this->createTransactionService->createTransaction($debitOperation->id, $creditOperation->id);
-        } catch (ModelNotFoundException $notFoundException) {
-            throw new ResourceNotFound("Wallet does not exists!");
-        }
-
-        DB::commit();
+                return $this->createTransactionService->createTransaction($debitOperation->id, $creditOperation->id);
+            } catch (ModelNotFoundException $notFoundException) {
+                throw new ResourceNotFound("Wallet does not exists!");
+            }
+        });
 
         $this->notify($transaction);
     }

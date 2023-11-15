@@ -19,16 +19,14 @@ class UserService
 
     public function createNewUser(array $data)
     {
-        DB::beginTransaction();
+        $user = DB::transaction(function () use ($data) {
+            $user = $this->createUser($data);
 
-        $user = $this->createUser($data);
-
-        $this->walletService->createWallet([
-            'user_id' => $user->id,
-            'balance' => 0,
-        ]);
-
-        DB::commit();
+            $this->walletService->createWallet([
+                'user_id' => $user->id,
+                'balance' => 0,
+            ]);
+        });
 
         return $user;
     }

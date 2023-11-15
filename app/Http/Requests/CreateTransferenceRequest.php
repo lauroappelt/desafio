@@ -23,8 +23,8 @@ class CreateTransferenceRequest extends FormRequest
     {
         return [
             'ammount' => 'required|integer|min:1',
-            'originWallet' => 'required|uuid|exists:wallets,id',
-            'destinationWallet' => 'required|uuid|exists:wallets,id'
+            'originWallet' => 'required|uuid',
+            'destinationWallet' => 'required|uuid'
         ];
     }
 }

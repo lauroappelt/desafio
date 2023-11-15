@@ -33,15 +33,13 @@ class WalletService
 
     public function addBalanceToWallet(string $walletId, int $ammount)
     {
-        DB::beginTransaction();
-
-        try {
-            $this->incrementWalletBalance($ammount, $walletId);
-        } catch (ModelNotFoundException $notFoundException) {
-            throw new ResourceNotFound("Wallet does not exists!");
-        }
-
-        DB::commit();
+        DB::transaction(function () use ($walletId, $ammount) {
+            try {
+                $this->incrementWalletBalance($ammount, $walletId);
+            } catch (ModelNotFoundException $notFoundException) {
+                throw new ResourceNotFound("Wallet does not exists!");
+            }
+        });
     }
 
     public function incrementWalletBalance(int $ammount, string $walletId): Operation
