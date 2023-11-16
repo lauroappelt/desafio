@@ -26,6 +26,8 @@ class UserService
                 'user_id' => $user->id,
                 'balance' => 0,
             ]);
+
+            return $user;
         });
 
         return $user;
